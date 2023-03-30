@@ -123,5 +123,6 @@ for i in range(I):
 print('\n', file=f, end='')
 
 #Constraint (9)
-# for i in range()
+
+
 f.close()
