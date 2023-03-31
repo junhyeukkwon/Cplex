@@ -1,30 +1,83 @@
-# #파일 불러들기
-f = open("input.txt",'r')
-lines = f.readlines()
-lines = list(map(lambda s : s.strip('\n'), lines))
+# 파일 열기
+with open("input.txt", "r") as f:
+    lines = f.readlines()
+    lines = list(map(lambda s : s.strip('\n'), lines))
+# 변수 초기화
+I = int(lines[0])
+Pi = int(lines[1])
+M = 9999
+
+# Oip 파싱
+Oip = []
+for i in range(3, 3 + Pi):
+    Oip.append(list(map(int, lines[i].split())))
+
+# Qikk_prime 파싱
+Qikk_prime_start = 3 + Pi + 1
+Qikk_prime = []
+for i in range(Qikk_prime_start, Qikk_prime_start + I):
+    Qikk_prime.append(list(map(int, lines[i].split())))
+
+# tipj 파싱
+# tipj_start = Qikk_prime_start + Pi
+# tipj = []
+# for i in range(tipj_start, len(lines), Pi):
+#     temp = []
+#     for j in range(i, i + Pi):
+#         print(j)
+#         if lines[j] != '':
+#             temp.append(list(map(int, lines[j].split())))
+#     tipj.append(temp)
+# # # 빈 배열 제거
+# Oip = [op for op in Oip if op]
+# Qikk_prime = [q for q in Qikk_prime if q]
+# tipj = [[t for t in tp if t] for tp in tipj]
+
+temp = []
+for i in range(11,13+I*Pi):
+    a = list(map(int,lines[i].split()))
+    temp.append(a)
+temp = [a for a in temp if a]
+tipj = []
+for i in range(0, len(temp), 3):
+    sublist = temp[i:i+3]
+    tipj.append(sublist)
+
+
+print(lines)
+print("I =", I)
+print("P =", Pi)
+print("Oip =", Oip)
+print("Qikk_prime =", Qikk_prime)
+print("tipj =", tipj)
+
 
 #입력파일 start
-f = open('stdout2.txt', 'w')
-
-# # Define the problem parameters
-I =  int(lines[0]) # Jobs
-Pi = int(lines[1]) # Process routes
-del lines[0]
-del lines[0]
-lines.remove('')
-Oip = [] # Ordered set of operations for each job i and process route p
-for i in range(Pi):
-    Oip.append(list(map(int,lines[i].split())))
-print(Oip)
-M = 999 # A large number
+import time
+timestr = time.strftime("%Y%m%d-%H%M%S")
+f = open(f'LP_file_{timestr}.lp', 'w')
 
 print('Objective Function', file=f, end='\n\n')
 print('Minimize Cmax', file=f, end='\n\n')
 print('Subject to', file=f, end='\n\n')
 
+#tipj, Qikk_prime value_mathing
+for i in range(1,I+1):
+    for j in range(1, Pi+1):
+        for k in Oip[j-1]:
+            print(f'T({i},{j},{k}) = {tipj[i-1][j-1][Oip[j-1].index(k)]}', file=f)
+print('\n', file=f, end='')
+
+for i in range(1,I+1):
+    #확장성 필요
+    for k in range(1,3):
+        if k==1:
+            print(f'Q({i},{k},{k+1}) = {Qikk_prime[i-1][k-1]}', file=f)
+            print(f'Q({i},{k},{k+2}) = {Qikk_prime[i-1][k]}', file=f)
+print('\n', file=f, end='')
 # Define the constraints
 
-# # Constraint (1)
+# Constraint (1)
 for i in range(I):
     summation = ""
     for p in range(Pi):
@@ -33,87 +86,59 @@ for i in range(I):
     print(summation, file=f)
 print('\n', file=f, end='')
 
-# # Constarint (2)
-# #version 1
-# # for i in range(1,I+1):
-# #     for p in range(1,Pi+1):
-# #         for j in Oip:
-# #             print("X({i},{p},{j})=Z({i},{p})".format(i=i,p=p,j=j))
-# #verion 2
+# Constarint (2)
 for i in range(I):
     for p in range(Pi):
         for j in range(len(Oip[p])):
             print(f"X({i + 1},{p + 1},{Oip[p][j]}) - Z({i + 1},{p + 1}) = 0", file=f)
 print('\n', file=f, end='')
 
-# # Constraint (3)
-# #version 1
-# # for i in range(1,I+1):
-# #     for p in range(1,Pi+1):
-# #         for j in Oip:
-# #             print("S({i},{p},{j}) + C({i},{p},{j}) <= {M}X({i},{p},{j})".format(i=i,p=p,j=j, M=M))
-# #version 2
-for i in range(I):
-    for p in range(Pi):
-        for j in range(len(Oip[p])):
-            print(f"S({i + 1},{p + 1},{Oip[p][j]}) + C({i + 1},{p + 1},{Oip[p][j]}) - {M} * X({i + 1},{p + 1},{Oip[p][j]}) <= 0", file=f)
+# Constraint (3)
+for i in range(1,I+1):
+    for p in range(1,Pi+1):
+        for j in Oip[p-1]:
+            print(f"S({i},{p},{j}) + C({i},{p},{j}) - {M}X({i},{p},{j}) <= 0", file=f)
 print('\n', file=f, end='')
 
-# # Constarint (4)
-# #version 1
-# # for i in range(1,I+1):
-# #     for p in range(1,Pi+1):
-# #         for j in Oip:
-# #             print("S({i},{p},{j}) + t({i},{p},{j}) <= C({i},{p},{j}) + {M}(1-X({i},{p},{j}))".format(i=i,p=p,j=j, M=M))
-# #version 2
-for i in range(I):
-    for p in range(Pi):
-        for j in range(len(Oip[p])):
-            print(f"S({i + 1},{p + 1},{Oip[p][j]}) + t({i + 1},{p + 1},{Oip[p][j]}) - C({i + 1},{p + 1},{Oip[p][j]}) - {M} * (1 - X({i + 1},{p + 1},{Oip[p][j]})) <= 0", file=f)
+# Constarint (4)
+
+for i in range(1,I+1):
+    for p in range(1,Pi+1):
+        for j in Oip[p-1]:
+            print(f"S({i},{p},{j}) + T({i},{p},{j}) - C({i},{p},{j}) + {M}X({i},{p},{j}) <= {M}", file=f)
 print('\n', file=f, end='')
 
 #Constraint (5)
-#version 1
-# for i in range(I):
-#     for i_prime in range(I):
-#         if i == i_prime:
-#             continue
-#         for p in range(Pi):
-#             for p_prime in range(Pi):
-#                 for j in range(len(Oip[p]) - 1):
-#                     for j_prime in range(len(Oip[p_prime]) - 1):
-#                         print(f"S({i + 1},{p + 1},{Oip[p][j]}) + {M} * Y({i + 1},{i_prime + 1},{p + 1},{p_prime + 1},{Oip[p][j]},{Oip[p_prime][j_prime]}) >= C({i_prime + 1},{p_prime + 1},{Oip[p_prime][j_prime]})", file=f)
-# print('\n', file=f, end='')
-
-#version 2
-for i in range(I):
-        for i_prime in range(I):
-            if i != i_prime:
-                for p in range(Pi):
-                    for p_prime in range(Pi):
-                        for j in Oip[i]:
-                            for j_prime in Oip[i_prime]:
-                                print(f"S({i+1},{p+1},{j}) + {M} * Y({i+1},{p+1},{j},{i_prime+1},{p_prime+1},{j_prime}) - C({i_prime+1},{p_prime+1},{j_prime}) >= 0", file=f)
+for i in range(1,I+1):
+        for i_prime in range(1,I+1):
+            for p in range(1, Pi+1):
+                for p_prime in range(1, Pi+1):
+                    for j in Oip[p-1]:
+                        for j_prime in Oip[p-1]:
+                            if i != i_prime:
+                                if j_prime != 100:
+                                    print(f"S({i},{p},{j}) + {M}Y({i},{p},{j},{i_prime},{p_prime},{j_prime}) - C({i_prime},{p_prime},{j_prime}) >= 0", file=f)
 print('\n', file=f, end='')
 
 
 #Constraint (6)
-for i in range(I):
-    for i_prime in range(I):
-        if i != i_prime:
-            for p in range(Pi):
-                for p_prime in range(Pi):
-                    for j in Oip[i]:
-                        for j_prime in Oip[i_prime]:
-                            print(f"S({i_prime+1},{p_prime+1},{j_prime}) + {M} * (1 - Y({i+1},{p+1},{j},{i_prime+1},{p_prime+1},{j_prime})) - C{i+1}{p+1}{j} >= 0", file=f)
+for i in range(1,I+1):
+        for i_prime in range(1,I+1):
+            for p in range(1, Pi+1):
+                for p_prime in range(1, Pi+1):
+                    for j in Oip[p-1]:
+                        for j_prime in Oip[p-1]:
+                            if i != i_prime:
+                                if j_prime != 100:
+                                    print(f"S({i_prime},{p_prime},{j_prime}) - {M}Y({i},{p},{j},{i_prime},{p_prime},{j_prime}) - C{i}{p}{j} >= -{M}", file=f)
 print('\n', file=f, end='')
 
 #Constraint (7)
-for i in range(I):
-        for p in range(Pi):
-            first_op = Oip[i][0]
-            for j in range(1, len(Oip[i])):
-                print(f"S({i+1},{p+1},{Oip[i][j]}) - C{i+1}{p+1}{Oip[i][j-1]} >= 0", file=f)
+for i in range(1, I+1):
+        for p in range(1, Pi+1):
+            for j in Oip[p-1]:
+                if j != 1:
+                    print(f"S({i},{p},{j}) - C({i},{p},{Oip[p-1][(Oip[p-1].index(j)-1)]}) >= 0", file=f)
 print('\n', file=f, end='')
 
 #Constraint (8)
@@ -141,14 +166,34 @@ for i in range(I):
             print(f"C({i+1},{p+1},{j}) >= 0", file=f)
 
 for i in range(I):
-    print(f"C{i+1} >= 0", file=f)
+    print(f"C({i+1}) >= 0", file=f)
 print('\n', file=f, end='')
 
 #Constraint (11)
 print('BINARY','\n', file=f)
-
+#variable Z
 for i in range(I):
     for p in range(Pi):
-        print(f'Z({i+1},{p+1})')
+        print(f'Z({i+1},{p+1})', file=f)
+print('\n', file=f, end='')
 
+#variable X
+for i in range(1,I+1):
+    for p in range(1,Pi+1):
+        for j in range(len(Oip[p-1])):
+            print(f'X({i},{p},{Oip[p-1][j]})', file=f)
+print('\n', file=f, end='')
+
+#variable Y
+for i in range(1,I+1):
+    for p in range(1, Pi+1):
+        for j in Oip[p-1]:
+            for i_prime in range(1, I+1):
+                for p_prime in range(1, Pi+1):
+                    for j_prime in Oip[p-1]:
+                        if i != i_prime:
+                            if j_prime != 100:
+                                print(f"Y({i},{p},{j},{i_prime},{p_prime},{k_prime})", file=f)
+print('\n', file=f, end='')
+print('END', file=f)
 f.close()
