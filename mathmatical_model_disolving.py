@@ -123,6 +123,32 @@ for i in range(I):
 print('\n', file=f, end='')
 
 #Constraint (9)
+for i in range(I):
+    for p in range(Pi):
+        lip = Oip[i][-1]
+        print(f"Cmax - C({i+1},{p+1},{lip}) >= 0", file=f)
+print('\n', file=f, end='')
 
+#Constraint (10)
+for i in range(I):
+    for p in range(Pi):
+        for j in Oip[p]:
+            print(f"S({i+1},{p+1},{j}) >= 0", file=f)
+            
+for i in range(I):
+    for p in range(Pi):
+        for j in Oip[p]:
+            print(f"C({i+1},{p+1},{j}) >= 0", file=f)
+
+for i in range(I):
+    print(f"C{i+1} >= 0", file=f)
+print('\n', file=f, end='')
+
+#Constraint (11)
+print('BINARY','\n', file=f)
+
+for i in range(I):
+    for p in range(Pi):
+        print(f'Z({i+1},{p+1})')
 
 f.close()
