@@ -1143,4 +1143,81 @@ Y(3,3,101,2,2,1)                1.000000
 Y(3,3,101,2,2,2)                1.007201
 Y(3,3,101,2,2,101)              1.004400
 Y(3,3,101,2,2,3)                1.000000
-Y(3,3,102,2,2,1)      
+Y(3,3,102,2,2,1)                1.000000
+Y(3,3,102,2,2,2)                1.007201
+Y(3,3,102,2,2,101)              1.004400
+Y(3,3,102,2,2,3)                1.000000
+Y(3,3,3,2,2,1)                  1.000000
+Y(3,3,3,2,2,2)                  1.007201
+Y(3,3,3,2,2,101)                1.004400
+Y(3,3,3,2,2,3)                  1.000000
+Y(3,3,1,2,3,1)                  1.000000
+Y(3,3,1,2,3,2)                  1.000000
+Y(3,3,1,2,3,101)                1.000000
+Y(3,3,1,2,3,102)                1.000000
+Y(3,3,1,2,3,3)                  1.000000
+Y(3,3,2,2,3,1)                  1.000000
+Y(3,3,2,2,3,2)                  1.000000
+Y(3,3,2,2,3,101)                1.000000
+Y(3,3,2,2,3,102)                1.000000
+Y(3,3,2,2,3,3)                  1.000000
+Y(3,3,100,2,3,1)                1.000000
+Y(3,3,100,2,3,2)                1.000000
+Y(3,3,100,2,3,101)              1.000000
+Y(3,3,100,2,3,102)              1.000000
+Y(3,3,100,2,3,3)                1.000000
+Y(3,3,101,2,3,1)                1.000000
+Y(3,3,101,2,3,2)                1.000000
+Y(3,3,101,2,3,101)              1.000000
+Y(3,3,101,2,3,102)              1.000000
+Y(3,3,101,2,3,3)                1.000000
+Y(3,3,102,2,3,1)                1.000000
+Y(3,3,102,2,3,2)                1.000000
+Y(3,3,102,2,3,101)              1.000000
+Y(3,3,102,2,3,102)              1.000000
+Y(3,3,102,2,3,3)                1.000000
+Y(3,3,3,2,3,1)                  1.000000
+Y(3,3,3,2,3,2)                  1.000000
+Y(3,3,3,2,3,101)                1.000000
+Y(3,3,3,2,3,102)                1.000000
+Y(3,3,3,2,3,3)                  1.000000
+All other variables matching '*' are 0.
+
+Log started (V20.1.0.0) Mon Apr  3 11:02:33 2023
+
+
+Problem 'LP_file_20230402-230354.lp' read.
+Read time = 0.00 sec. (0.22 ticks)
+Version identifier: 20.1.0.0 | 2020-11-10 | 9bedb6d68
+Tried aggregator 8 times.
+MIP Presolve eliminated 2298 rows and 1182 columns.
+MIP Presolve modified 189 coefficients.
+Aggregator did 108 substitutions.
+Reduced MIP has 30 rows, 19 columns, and 75 nonzeros.
+Reduced MIP has 9 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (4.56 ticks)
+Found incumbent of value 9999.000000 after 0.02 sec. (4.75 ticks)
+Probing fixed 3 vars, tightened 12 bounds.
+Probing time = 0.00 sec. (0.17 ticks)
+Cover probing fixed 0 vars, tightened 12 bounds.
+Tried aggregator 1 time.
+MIP Presolve eliminated 30 rows and 19 columns.
+MIP Presolve modified 2 coefficients.
+All rows and columns eliminated.
+Presolve time = 0.00 sec. (0.02 ticks)
+
+Root node processing (before b&c):
+  Real time             =    0.02 sec. (5.02 ticks)
+Parallel b&c, 16 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.02 sec. (5.02 ticks)
+
+Solution pool: 2 solutions saved.
+
+MIP - Integer optimal solution:  Objective =  3.0500000000e+02
+Solution time =    0.03 sec.  Iterations = 0  Nodes = 0 (1)
+Deterministic time = 5.02 ticks  (162.04 ticks/sec)
+
