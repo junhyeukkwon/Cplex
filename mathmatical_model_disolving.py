@@ -18,21 +18,6 @@ Qikk_prime = []
 for i in range(Qikk_prime_start, Qikk_prime_start + I):
     Qikk_prime.append(list(map(int, lines[i].split())))
 
-# tipj 파싱
-# tipj_start = Qikk_prime_start + Pi
-# tipj = []
-# for i in range(tipj_start, len(lines), Pi):
-#     temp = []
-#     for j in range(i, i + Pi):
-#         print(j)
-#         if lines[j] != '':
-#             temp.append(list(map(int, lines[j].split())))
-#     tipj.append(temp)
-# # # 빈 배열 제거
-# Oip = [op for op in Oip if op]
-# Qikk_prime = [q for q in Qikk_prime if q]
-# tipj = [[t for t in tp if t] for tp in tipj]
-
 temp = []
 for i in range(11,13+I*Pi):
     a = list(map(int,lines[i].split()))
@@ -120,7 +105,7 @@ for i in range(1,I+1):
                                     print(f"S({i},{p},{j}) + {M}Y({i},{p},{j},{i_prime},{p_prime},{j_prime}) - C({i_prime},{p_prime},{j_prime}) >= 0", file=f)
 print('\n', file=f, end='')
 
-
+# check
 #Constraint (6)
 for i in range(1,I+1):
         for i_prime in range(1,I+1):
@@ -130,7 +115,7 @@ for i in range(1,I+1):
                         for j_prime in Oip[p-1]:
                             if i != i_prime:
                                 if j_prime != 100:
-                                    print(f"S({i_prime},{p_prime},{j_prime}) - {M}Y({i},{p},{j},{i_prime},{p_prime},{j_prime}) - C{i}{p}{j} >= -{M}", file=f)
+                                    print(f"S({i_prime},{p_prime},{j_prime}) - {M}Y({i},{p},{j},{i_prime},{p_prime},{j_prime}) - C({i},{p},{j}) >= -{M}", file=f)
 print('\n', file=f, end='')
 
 #Constraint (7)
@@ -138,7 +123,7 @@ for i in range(1, I+1):
         for p in range(1, Pi+1):
             for j in Oip[p-1]:
                 if j != 1:
-                    print(f"S({i},{p},{j}) - C({i},{p},{Oip[p-1][(Oip[p-1].index(j)-1)]}) >= 0", file=f)
+                    print(f"S({i},{p},{j}) - C({i},{p},{Oip[p-1][(Oip[p-1].index(j))-1]}) >= 0", file=f)
 print('\n', file=f, end='')
 
 #Constraint (8)
@@ -186,10 +171,10 @@ print('\n', file=f, end='')
 
 #variable Y
 for i in range(1,I+1):
-    for p in range(1, Pi+1):
-        for j in Oip[p-1]:
-            for i_prime in range(1, I+1):
-                for p_prime in range(1, Pi+1):
+    for i_prime in range(1, I+1):
+        for p in range(1, Pi+1):
+            for p_prime in range(1, Pi+1):
+                for j in Oip[p-1]:
                     for j_prime in Oip[p-1]:
                         if i != i_prime:
                             if j_prime != 100:

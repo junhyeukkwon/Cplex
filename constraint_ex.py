@@ -228,7 +228,7 @@ for i in range(1,jobn+1):
                     for k1 in opern[j-1]:
                         if i != i1:
                             if (k1!=100):
-                                file.write('S({},{},{})'.format(i1,j1,k1)+'+'+'9999Y({},{},{},{},{},{})'.format(i,j,k,i1,j1,k1)+'-'+'C({},{},{})'.format(i,j,k)+'>= -9999')
+                                file.write('S({},{},{})'.format(i1,j1,k1)+'-'+'9999Y({},{},{},{},{},{})'.format(i,j,k,i1,j1,k1)+'-'+'C({},{},{})'.format(i,j,k)+'>= -9999')
                                 file.write("\n")
 
 #7
