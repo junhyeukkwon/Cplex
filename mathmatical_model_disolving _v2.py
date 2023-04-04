@@ -1,51 +1,56 @@
-# 파일 열기
-with open("input.txt", "r") as f:
-    lines = f.readlines()
-    lines = list(map(lambda s : s.strip('\n'), lines))
+File_Data = open("C:/Users/user/Documents/GitHub/Cplex/input.txt")
+Data = File_Data.readline()
+Tmp = []
 
-print(lines)
-# '' 지우기
-remove_element = ''
-lines = [i for i in lines if i not in remove_element]
-print(lines)
+while Data !='':
+    Tmp.append(Data)
+    Data = File_Data.readline()
 
-# 변수 초기화
-I = int(lines[0])
-Pi = int(lines[1])
+Tmp = list(map(lambda s: s.rstrip(), Tmp))
+
 M = 9999
+I = int(Tmp[0])
+Pi = int(Tmp[1])
+del Tmp[0:3]
 
-# Oip 파싱
 Oip = []
-for i in range(2, 2 + Pi):
-    Oip.append(list(map(int, lines[i].split())))
+for i in range(Pi):
+    Oip.append(Tmp[i])
+del Tmp[0:len(Oip)+1]
 
-# Qikk_prime 파싱
-Qikk_prime_start = 3 + Pi + 1
+for i in range(len(Oip)):
+    Oip[i] = Oip[i].split(' ')
+Oip = [list(map(int, i)) for i in Oip]
+print("Operation = ", Oip)
+
+
 Qikk_prime = []
-for i in range(Qikk_prime_start, Qikk_prime_start + I):
-    Qikk_prime.append(list(map(int, lines[i].split())))
+for i in range(I):
+    Qikk_prime.append(Tmp[i])
+del Tmp[0:len(Qikk_prime)+1]
 
-# tipj_start = Qikk_prime_start + Pi +2
-# temp = []
-# for i in range(tipj_start , tipj_start+I*Pi):
-#     a = list(map(int,lines[i].split()))
-#     temp.append(a)
-# temp = [a for a in temp if a]
-# tipj = []
-# for i in range(0, len(temp), 3):
-#     sublist = temp[i:i+3]
-#     tipj.append(sublist)
+for i in range(len(Qikk_prime)):
+    Qikk_prime[i] = Qikk_prime[i].split(' ')
+Qikk_prime = [list(map(int, i)) for i in Qikk_prime]
 
 
-temp = []
-for i in range(11,13+I*Pi):
-    a = list(map(int,lines[i].split()))
-    temp.append(a)
-temp = [a for a in temp if a]
 tipj = []
-for i in range(0, len(temp), 3):
-    sublist = temp[i:i+3]
-    tipj.append(sublist)
+for i in range(I):
+    Job_Tmp = []
+    for p in range(Pi):
+        Job_Tmp.append(Tmp[p])
+    del Tmp[0:len(Job_Tmp)+1]
+
+    for p in range(len(Job_Tmp)):
+        Job_Tmp[p] = Job_Tmp[p].split(' ')
+    Job_Tmp = [list(map(int, i)) for i in Job_Tmp]
+    tipj.append(Job_Tmp)
+print(tipj)
+
+
+for i in range(len(tipj)):
+    Qikk_prime[i][1] = Qikk_prime[i][1] + tipj[i][0][1]
+print(Qikk_prime)
 
 print("I =", I)
 print("P =", Pi)
@@ -58,7 +63,7 @@ print("tipj =", tipj)
 import copy
 import time
 timestr = time.strftime("%Y%m%d-%H%M%S")
-f = open(f'LP_file_{timestr}.lp', 'w')
+f = open(f'LP_file_3_3{timestr}.lp', 'w')
 
 print('Objective Function', file=f, end='\n\n')
 print('Minimize Cmax', file=f, end='\n\n')
@@ -112,16 +117,6 @@ for i in range(1,I+1):
 print('\n', file=f, end='')
 
 #Constraint (5)
-# for i in range(1,I+1):
-#         for i_prime in range(1,I+1):
-#             for p in range(1, Pi+1):
-#                 for p_prime in range(1, Pi+1):
-#                     for j in Oip[p-1]:
-#                         for j_prime in Oip[p-1]:
-#                             if i != i_prime:
-#                                 if j_prime != 100:
-#                                     print(f"S({i},{p},{j})+{M}Y({i},{p},{j},{i_prime},{p_prime},{j_prime})-C({i_prime},{p_prime},{j_prime})>=0", file=f)
-# print('\n', file=f, end='')
 Number = []
 for chk in range(1,I+1):
     Number.append(chk)
@@ -138,18 +133,6 @@ for i in range(1, I+1):
                             if j1 == j:
                                 print(f"S({i},{p},{j})+9999Y({i},{p},{j},{Number_chk[n]},{p1},{j1})-C({Number_chk[n]},{p1},{j1})>=0", file=f)
 print('\n', file=f, end='')
-
-#Constraint (6)
-# for i in range(1,I+1):
-#         for i_prime in range(1,I+1):
-#             for p in range(1, Pi+1):
-#                 for p_prime in range(1, Pi+1):
-#                     for j in Oip[p-1]:
-#                         for j_prime in Oip[p-1]:
-#                             if i != i_prime:
-#                                 if j_prime != 100:
-#                                     print(f"S({i_prime},{p_prime},{j_prime})-{M}Y({i},{p},{j},{i_prime},{p_prime},{j_prime})-C({i},{p},{j})>=-{M}", file=f)
-# print('\n', file=f, end='')
 
 # Constraint (6)
 Number_1 = []
@@ -186,7 +169,7 @@ print('\n', file=f, end='')
 #Constraint (9)
 for i in range(I):
     for p in range(Pi):
-        lip = Oip[i][-1]
+        lip = Oip[p][-1]
         print(f"Cmax-C({i+1},{p+1},{lip})>=0", file=f)
 print('\n', file=f, end='')
 
