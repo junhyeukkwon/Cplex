@@ -1,4 +1,4 @@
-File_Data = open("C:/Users/user/Documents/GitHub/Cplex/input.txt")
+File_Data = open("C:/Users/user/Documents/GitHub/Cplex/Route_5_3_2_5.txt")
 Data = File_Data.readline()
 Tmp = []
 
@@ -63,7 +63,7 @@ print("tipj =", tipj)
 import copy
 import time
 timestr = time.strftime("%Y%m%d-%H%M%S")
-f = open(f'LP_file_3_3{timestr}.lp', 'w')
+f = open(f'LP_file_5_3_2_5{timestr}.lp', 'w')
 
 print('Objective Function', file=f, end='\n\n')
 print('Minimize Cmax', file=f, end='\n\n')
@@ -81,7 +81,7 @@ for i in range(1,I+1):
     for k in range(1,3):
         if k==1:
             print(f'Q({i},{k},{k+1}) = {Qikk_prime[i-1][k-1]}', file=f)
-            print(f'Q({i},{k},{k+2}) = {Qikk_prime[i-1][k]+tipj[i-1][0][1]}', file=f)
+            print(f'Q({i},{k},{k+2}) = {Qikk_prime[i-1][k]}', file=f)
 print('\n', file=f, end='')
 # Define the constraints
 
@@ -129,9 +129,12 @@ for i in range(1, I+1):
             for n in range(len(Number_chk)):
                 for p1 in range(1,Pi+1):
                     for j1 in Oip[p1-1]:
-                        if j != 100 and j1 != 100:
-                            if j1 == j:
-                                print(f"S({i},{p},{j})+9999Y({i},{p},{j},{Number_chk[n]},{p1},{j1})-C({Number_chk[n]},{p1},{j1})>=0", file=f)
+                        if j1 == j:
+                            print(f"S({i},{p},{j}) + {M}Y({i},{p},{j},{Number_chk[n]},{p1},{j1}) - C({Number_chk[n]},{p1},{j1}) >= 0", file=f)
+                        if j1 == 100+j:
+                            print(f"S({i},{p},{j}) + {M}Y({i},{p},{j},{Number_chk[n]},{p1},{j1}) - C({Number_chk[n]},{p1},{j1}) >= 0", file=f)
+                        if 100+j1 == j:
+                            print(f"S({i},{p},{j}) + {M}Y({i},{p},{j},{Number_chk[n]},{p1},{j1}) - C({Number_chk[n]},{p1},{j1}) >=0", file=f)
 print('\n', file=f, end='')
 
 # Constraint (6)
@@ -147,9 +150,12 @@ for i in range(1, I+1):
             for n in range(len(Number_chk_1)):
                 for p1 in range(1,Pi+1):
                     for j1 in Oip[p1-1]:
-                        if j != 100 and j1 != 100:
-                            if j1 == j:
-                                print(f"S({Number_chk[n]},{p1},{j1})-9999Y({i},{p},{j},{Number_chk[n]},{p1},{j1})-C({i},{p},{j})>=-{M}", file=f)
+                        if j1 == j:
+                            print(f"S({Number_chk_1[n]},{p1},{j1}) - 9999Y({i},{p},{j},{Number_chk_1[n]},{p1},{j1}) - C({i},{p},{j}) >= -9999", file=f)
+                        if j1 == 100 + j:
+                            print(f"S({Number_chk_1[n]},{p1},{j1}) - 9999Y({i},{p},{j},{Number_chk_1[n]},{p1},{j1}) - C({i},{p},{j}) >= -9999", file=f)
+                        if 100 + j1 == j:
+                            print(f"S({Number_chk_1[n]},{p1},{j1}) - 9999Y({i},{p},{j},{Number_chk_1[n]},{p1},{j1}) - C({i},{p},{j}) >= -9999", file=f)
 print('\n', file=f, end='')
 
 #Constraint (7)
@@ -226,9 +232,12 @@ for i in range(1, I+1):
             for n in range(len(Number_chk_2)):
                 for p1 in range(1,Pi+1):
                     for j1 in Oip[p1-1]:
-                        if j != 100 and j1 != 100:
-                            if j1 == j:
-                                print(f"Y({i},{p},{j},{Number_chk_2[n]},{p1},{j1})", file=f)
+                        if j1 == j:
+                            print(f"Y({i},{p},{j},{Number_chk_2[n]},{p1},{j1})", file=f)
+                        if j1 == 100+j:
+                            print(f"Y({i},{p},{j},{Number_chk_2[n]},{p1},{j1})", file=f)
+                        if 100+j1 == j:
+                            print(f"Y({i},{p},{j},{Number_chk_2[n]},{p1},{j1})", file=f)
                             
             print('\n', file=f, end='')
 print('\n', file=f, end='')

@@ -1,7 +1,7 @@
 import copy
 
 
-File_Data = open("C:/Users/user/Desktop/CPLEX/Route_3_3_2_8.txt")
+File_Data = open("C:/Users/user/Documents/GitHub/Cplex/Route_5_3_2_1.txt")
 Data = File_Data.readline()
 Tmp = []
 
@@ -68,7 +68,7 @@ for i in range(len(Processing_time)):
 #######################      DATA 불러오기       ########################
 
 
-File=open("C:/Users/user/Desktop/CPLEX/LP_File_"+str(100)+"_"+"_2.lp",'w')
+File=open("C:/Users/user/Documents/GitHub/Cplex/LP_File_"+str(100)+"_"+"_2.lp",'w')
 File.write("Objective Function")
 File.write("\n")
 File.write("Minimize Cmax")
